@@ -1,11 +1,27 @@
 from glob import glob
 import pandas as pd
 from datetime import datetime
+import argparse
 
 DATE_FORMAT= '%Y-%m-%d_%H-%M-%S'
-ROOT_FOLDER = ''#'./ariellepedrosa/'
+ROOT_FOLDER = ''# Navigate to the folder where the files was previously stored. 
+
+def command_line_parsing():
+
+    parser = argparse.ArgumentParser(description = __doc__)
+
+    parser.add_argument('--output', '-output', 
+                        dest='output', 
+                        required=False,
+                        help='Path where you want to store the .csv file will be generated and the csv file name.',
+                        default='../csv_output.csv')
+    
+    return parser.parse_args()
+
 
 def main():
+    
+    args = command_line_parsing()
     
     files = glob(ROOT_FOLDER + "*")    
     dataframe = pd.DataFrame({"file_name":files})
@@ -52,7 +68,7 @@ def main():
     })
     
     final_dataframe.sort_values(by="post_date", ascending=False, inplace=True)
-    final_dataframe.to_csv('../arielle_posts.csv', index=False)
+    final_dataframe.to_csv(args.output, index=False)
     
     
 
